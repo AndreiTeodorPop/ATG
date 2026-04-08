@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Castorama - Le meilleur du bricolage</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/castorama.css">
+</head>
+<body>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <span><i class="fas fa-truck"></i> Livraison gratuite dès 75&euro;</span>
+      <span><i class="fas fa-store"></i> Retrait gratuit en magasin</span>
+      <span><i class="fas fa-phone"></i> 09 70 82 52 52</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <a class="logo" onclick="navigate('home')">
+        <div class="logo-box">C</div>
+        <div class="logo-text">casto<strong>rama</strong></div>
+      </a>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Que recherchez-vous ?"
+               onkeydown="if(event.key==='Enter'&&this.value.trim())navigate('search',{q:this.value.trim()})">
+        <button class="search-btn"
+                onclick="var q=document.getElementById('searchInput').value.trim();if(q)navigate('search',{q:q})">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <!-- Account + Cart -->
+      <div class="header-actions">
+        <div class="hdr-btn" id="accountBtn" onclick="toggleAccountMenu()">
+          <i class="fas fa-user-circle fa-lg"></i>
+          <div class="hdr-btn-labels">
+            <span class="hdr-btn-sub">Bonjour</span>
+            <span class="hdr-btn-main" id="accountLabel">Connexion</span>
+          </div>
+          <i class="fas fa-chevron-down fa-xs"></i>
+        </div>
+        <div class="hdr-btn cart-btn" onclick="openCart()">
+          <span class="cart-icon-wrap">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            <span class="cart-badge" id="cartBadge">0</span>
+          </span>
+          <div class="hdr-btn-labels">
+            <span class="hdr-btn-sub">Mon</span>
+            <span class="hdr-btn-main">Panier</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category nav -->
+    <nav class="cat-nav">
+      <div class="cat-nav-inner">
+        <a class="cat-link" id="nav-home" onclick="navigate('home')"><i class="fas fa-home"></i> Accueil</a>
+        <a class="cat-link" id="nav-OUTILLAGE" onclick="navigate('catalog',{category:'OUTILLAGE'})"><i class="fas fa-tools"></i> Outillage</a>
+        <a class="cat-link" id="nav-PEINTURE" onclick="navigate('catalog',{category:'PEINTURE'})"><i class="fas fa-paint-roller"></i> Peinture</a>
+        <a class="cat-link" id="nav-SOL" onclick="navigate('catalog',{category:'SOL'})"><i class="fas fa-border-all"></i> Sols &amp; Murs</a>
+        <a class="cat-link" id="nav-PLOMBERIE" onclick="navigate('catalog',{category:'PLOMBERIE'})"><i class="fas fa-faucet"></i> Plomberie</a>
+        <a class="cat-link" id="nav-ELECTRICITE" onclick="navigate('catalog',{category:'ELECTRICITE'})"><i class="fas fa-bolt"></i> &Eacute;lectricit&eacute;</a>
+        <a class="cat-link" id="nav-JARDIN" onclick="navigate('catalog',{category:'JARDIN'})"><i class="fas fa-leaf"></i> Jardin</a>
+        <a class="cat-link" id="nav-MENUISERIE" onclick="navigate('catalog',{category:'MENUISERIE'})"><i class="fas fa-door-open"></i> Menuiserie</a>
+        <a class="cat-link" id="nav-QUINCAILLERIE" onclick="navigate('catalog',{category:'QUINCAILLERIE'})"><i class="fas fa-cogs"></i> Quincaillerie</a>
+        <a class="cat-link" id="nav-CHAUFFAGE" onclick="navigate('catalog',{category:'CHAUFFAGE'})"><i class="fas fa-fire"></i> Chauffage</a>
+        <a class="cat-link" id="nav-CUISINE" onclick="navigate('catalog',{category:'CUISINE'})"><i class="fas fa-sink"></i> Cuisine &amp; Bain</a>
+        <a class="cat-link cat-promo" id="nav-sales" onclick="navigate('sales')"><i class="fas fa-tag"></i> Promotions</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Account dropdown -->
+  <div class="account-dropdown" id="accountDropdown"></div>
+
+  <!-- Main -->
+  <main id="main"><div class="page-loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div></main>
+
+  <!-- Cart sidebar overlay -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar-hdr">
+      <span><i class="fas fa-shopping-cart"></i> Mon panier</span>
+      <button onclick="closeCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-sidebar-body" id="cartBody">
+      <div class="empty-cart"><i class="fas fa-shopping-cart fa-3x"></i><p>Votre panier est vide</p></div>
+    </div>
+    <div class="cart-sidebar-foot" id="cartFoot"></div>
+  </aside>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+  <div class="modal" id="modal">
+    <button class="modal-close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div id="modalBody"></div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
