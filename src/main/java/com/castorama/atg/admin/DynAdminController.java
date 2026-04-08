@@ -11,6 +11,7 @@ import com.castorama.atg.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -346,6 +347,7 @@ public class DynAdminController {
      * dyn/admin — viewing order item descriptors with their state machine status.
      */
     @GetMapping("/repo/orders")
+    @Transactional(readOnly = true)
     public ResponseEntity<String> repoOrders() {
         List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 

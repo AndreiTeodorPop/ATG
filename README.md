@@ -31,6 +31,7 @@ A Spring Boot 3 application modelling Oracle ATG Commerce patterns for a French 
 | CartModifierFormHandler | `CartService` + `CartController` |
 | OrderManager | `OrderService` + checkout pipeline |
 | ATG Price Engine | `PriceCalculationProcessor` (TVA 20%, free shipping ≥ €75) |
+| Dynamo Administration UI | `DynAdminController` — server-rendered Dyn/Admin at `/dyn/admin` |
 
 ---
 
@@ -38,8 +39,9 @@ A Spring Boot 3 application modelling Oracle ATG Commerce patterns for a French 
 
 ```
 src/main/java/com/castorama/atg/
+├── admin/                # DynAdminController, DynAdminProperties — Dyn/Admin UI
 ├── config/               # SecurityConfig, WebConfig
-├── controller/           # AuthController, CatalogController, CartController, OrderController
+├── controller/           # AuthController, CatalogController, CartController, OrderController, SpaController
 ├── domain/
 │   ├── enums/            # ProductCategory, OrderStatus
 │   └── model/            # User, Product, CartItem, OrderItem, Order
@@ -89,9 +91,12 @@ The database file is created at `./data/castorama_atg.mv.db` on first run and pe
 |---|---|
 | `http://localhost:8080` | SPA Website |
 | `http://localhost:8080/swagger-ui.html` | Swagger UI (try all endpoints) |
+| `http://localhost:8080/dyn/admin` | Dyn/Admin interface (HTTP Basic Auth) |
 | `http://localhost:8080/h2-console` | H2 Database console |
 
 H2 console JDBC URL: `jdbc:h2:file:./data/castorama_atg`
+
+Default Dyn/Admin credentials: `admin` / `admin123` (configurable via `castorama.admin.username` / `castorama.admin.password`).
 
 ---
 
@@ -188,6 +193,22 @@ The website derives `login` automatically from the email local-part, so users on
 
 ---
 
+## Dyn/Admin Interface
+
+A server-rendered administration UI modelled after Oracle ATG's built-in `/dyn/admin` console, protected by HTTP Basic Auth.
+
+| Page | Path | Description |
+|---|---|---|
+| Dashboard | `/dyn/admin` | Component counts, JVM memory, uptime |
+| Nucleus Browser | `/dyn/admin/nucleus` | All Spring beans (Nucleus component tree) |
+| User Repository | `/dyn/admin/repo/users` | Browse and delete user accounts |
+| Product Repository | `/dyn/admin/repo/products` | Paginated product catalogue |
+| Order Repository | `/dyn/admin/repo/orders` | All orders with status and totals |
+| Pipeline Viewer | `/dyn/admin/pipeline` | Checkout pipeline processor chain |
+| System Properties | `/dyn/admin/system` | JVM system properties |
+
+---
+
 ## Configuration
 
 Key properties in `application.properties`:
@@ -202,6 +223,10 @@ castorama.jwt.expiration-seconds=86400
 
 # Schema
 spring.jpa.hibernate.ddl-auto=update
+
+# Dyn/Admin credentials
+castorama.admin.username=admin
+castorama.admin.password=admin123
 ```
 
 ---
